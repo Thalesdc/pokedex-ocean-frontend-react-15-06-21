@@ -10,11 +10,10 @@ function CardItem(props) {
         <div
           className="card_item"
           onClick={() => {
-            history.push("/visualizar/" + props.item._id);
+            history.push("/visualizar/" + props.item.name);
           }}
         >
-          <h2>{props.item.nome}</h2>
-          <img src={props.item.imagem} alt={props.item.nome} width="300"></img>
+          <h2>{props.item.name}</h2>
         </div>
       )}
     ></Route>
@@ -32,18 +31,13 @@ class ListarItens extends React.Component {
 
   async componentDidMount() {
     console.log("Component ListarItens mounted!");
-    // const request = await fetch("https://pokeapi.co/api/v2/pokemon");
-    const request = await fetch("https://backend-flexivel.herokuapp.com/", {
-      headers: new Headers({
-        Authorization: "thalesdiascarvalho",
-      }),
-    });
+    const request = await fetch("https://pokeapi.co/api/v2/pokemon");
     const json = await request.json();
     // 2 - Atualiza o estado após receber a requisição
     this.setState({
-      itens: json,
+      itens: json.results,
     });
-    console.log(json);
+    console.log(json.results);
   }
   render() {
     // 3 - Atualiza a informação de acordo com o estado
@@ -69,15 +63,7 @@ class VisualizarItem extends React.Component {
   }
   async componentDidMount() {
     console.log("Component ListarItens mounted!");
-    // const request = await fetch("https://pokeapi.co/api/v2/pokemon");
-    const request = await fetch(
-      "https://backend-flexivel.herokuapp.com/" + this.id,
-      {
-        headers: new Headers({
-          Authorization: "thalesdiascarvalho",
-        }),
-      }
-    );
+    const request = await fetch("https://pokeapi.co/api/v2/pokemon/" + this.id);
     const json = await request.json();
     // 2 - Atualiza o estado após receber a requisição
     console.log(json);
@@ -87,7 +73,38 @@ class VisualizarItem extends React.Component {
   }
 
   render() {
-    return <CardItem item={this.state.item} key={this.state.item_id} />;
+    if (this.state.item.sprites !== undefined) {
+      return (
+        <div className="lista_itens">
+          <div className="card_item">
+            <h2>{this.state.item.name}</h2>
+            <img
+              src={this.state.item.sprites.front_default}
+              alt={this.state.item.name}
+              width="300"
+            ></img>
+            <h4>height: {this.state.item.height} Kg</h4>
+            <h4>base_experience: {this.state.item.base_experience}</h4>
+            <div className="types">
+              {this.state.item.types.map((type) => (
+                <div className="type">
+                  <h4>{type.type.name}</h4>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="lista_itens">
+          <div className="card_item">
+            <h2>{this.state.item.name}</h2>
+            <img src="" alt={this.state.item.name} width="300"></img>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
