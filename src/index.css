@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Viaoda+Libre&display=swap");
+
+body {
+  font-family: "Viaoda Libre", cursive;
+}
+
+.lista_itens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.lista_itens h2 {
+  text-align: center;
+}
+.card_item {
+  border: 1px solid #c2c2c2;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
+}
